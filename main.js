@@ -43,7 +43,10 @@ const gifs = [
   "lemon",
   "eat",
   "hello",
-];
+].map(i => {
+  const title = i.toLowerCase();
+  return title.slice(0, 1).toUpperCase() + title.slice(1);
+}).sort();
 
 const PAGE_SIZE = 10;
 
@@ -73,7 +76,13 @@ function loadGifs() {
     img.setAttribute("src", `gifs/${gifName}.gif`);
 
     a.appendChild(img);
+
+    const title = document.createElement('span');
+    title.classList.add('slideTitle');
+    title.innerText = gifName;
+
     slideContainer.appendChild(a);
+    slideContainer.appendChild(title);
     container.appendChild(slideContainer);
   }
 }

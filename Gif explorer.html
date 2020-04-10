@@ -10,15 +10,27 @@
   </script>
 
   <style>
-    #giftitle {
+    .header {
       color: green;
       text-align: center;
       background-color: greenyellow;
       padding: 33px;
       font-size: 66px;
+      font-weight: bold;
     }
 
-    #root {}
+    .subHeader {
+      font-size: 25px;
+      background-color: rgb(255, 255, 0);
+      padding: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    #root {
+      display: flex;
+      flex-direction: column;
+    }
 
     #gifsContainer {
       display: flex;
@@ -33,10 +45,18 @@
 
     .slideContainer {
       padding: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .slideContainer img {
       height: 200px;
+    }
+
+    .slideTitle {
+      color: green;
+      font-size: 22;
     }
 
     .download_funny {
@@ -56,12 +76,7 @@
       box-shadow: -5px 5px #888888;
     }
 
-    .title2 {
-      font-size: 25px;
-      background-color: rgb(255, 255, 0);
-      padding: 15px;
-      text-align: center;
-    }
+
 
     .pageButton {
       background-color: blue;
@@ -77,18 +92,19 @@
       vertical-align: middle;
       cursor: pointer;
     }
-    .pageButtonActive{
+
+    .pageButtonActive {
       background-color: rgb(48, 196, 112);
     }
   </style>
 </head>
 
 <body>
-  <h1 id="giftitle">GIF explorer</h1>
-  <h4 class="title2">Made By: Konstantin buntsev</h4>
-  <h4 class="title2">Click on a gif to download it!</h4>
-
   <div id='root'>
+
+    <span class="header">GIF explorer</span>
+    <span class="subHeader">Made By: Konstantin buntsev</span>
+    <span class="subHeader">Click on a gif to download it!</span>
 
     <div id="gifsContainer"></div>
 
