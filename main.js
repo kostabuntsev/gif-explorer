@@ -59,7 +59,16 @@ const PAGE_SIZE = 10;
 
 const state = {
   pageNumber: 1,
+  searchTerm: '',
+  filteredGifs: []
 };
+
+function render() {
+  loadGifs();
+  loadPager();
+}
+
+
 
 function loadGifs() {
   const container = document.getElementById("gifsContainer");
@@ -68,9 +77,12 @@ function loadGifs() {
   }
   container.innerHTML = '';
 
-  for (let i = (state.pageNumber - 1) * PAGE_SIZE; i < Math.min(gifs.length, state.pageNumber * PAGE_SIZE); i++) {
-    let gifName = gifs[i].name;
-    console.log(gifs[i]);
+  state.filteredGifs = !state.searchTerm ? gifs : gifs.filter(g =>
+    g.name.toLowerCase().indexOf(state.searchTerm.toLowerCase()) != -1
+    || g.tags.some(t => t.toLowerCase().indexOf(state.searchTerm.toLowerCase()) != -1));
+
+  for (let i = (state.pageNumber - 1) * PAGE_SIZE; i < Math.min(state.filteredGifs.length, state.pageNumber * PAGE_SIZE); i++) {
+    let gifName = state.filteredGifs[i].name;
     const slideContainer = document.createElement("div");
     slideContainer.classList.add("slideContainer");
 
@@ -88,8 +100,8 @@ function loadGifs() {
     const title = document.createElement('span');
     title.classList.add('slideTitle');
     let titleText = gifName;
-    if (gifs[i].tags.length > 0) {
-      titleText += ' # ' + gifs[i].tags.reduce((acc, el) => `${acc} # ${el}`);
+    if (state.filteredGifs[i].tags.length > 0) {
+      titleText += ' # ' + state.filteredGifs[i].tags.reduce((acc, el) => `${acc} # ${el}`);
     }
     title.innerText = titleText;
 
@@ -106,7 +118,8 @@ function loadPager() {
   }
   container.innerHTML = '';
 
-  const pagesCount = Math.ceil(gifs.length / PAGE_SIZE);
+  const pagesCount = Math.ceil(state.filteredGifs.length / PAGE_SIZE);
+  if (pagesCount < 2) return;
 
   new Array(pagesCount).fill(0).forEach((el, i) => {
     const pageButton = document.createElement("div");
@@ -119,9 +132,17 @@ function loadPager() {
 
     pageButton.onclick = e => {
       state.pageNumber = parseInt(e.target.innerText);
-      loadGifs();
-      loadPager();
+      render();
     };
     container.appendChild(pageButton);
   });
+}
+
+
+
+
+function onSearchTermChange(value) {
+  state.searchTerm = value;
+  state.pageNumber = 1;
+  render();
 }
